@@ -1,0 +1,54 @@
+<html>
+  <head>
+   
+  </head>
+
+  <body>
+    <ul id="messages">
+      <li>Old Messages Below >>>>>>></li>
+      <li>Total Online Users <span id="user">1</span></li>
+    </ul>
+    <textarea id='chat'>
+
+    </textarea>
+    <button id="btn">Send</button>
+  </body>
+  <script src="socket.io.js"></script>
+  <script>
+    var socket = io('http://localhost:3000');
+    socket.on('connect', function() {
+      
+      
+    });
+    
+    socket.on('events', function(data) {
+      console.log('event', data);
+    });
+   
+  </script>
+  <script
+  src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
+  integrity="sha256-pasqAKBDmFT4eHoN2ndd6lN370kFiGUFyTiUHWhU7k8="
+  crossorigin="anonymous"></script>
+
+  <script>
+    $('#btn').click(function(){
+      mssg=$("#chat").val();
+      socket.emit('chat',mssg);
+      $('#messages').append(
+        mssg+'<br/>'
+      )
+      $('#chat').empty();
+    })
+    socket.on('chat',function(data){
+      $('#messages').append(
+        data+'<br/>'
+      )
+    })
+
+    socket.on('users',function(data){
+      console.log({data})
+      $('#user').text(data)
+    })
+  </script>
+</html>
